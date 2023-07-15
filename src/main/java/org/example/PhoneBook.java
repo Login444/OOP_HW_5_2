@@ -4,9 +4,10 @@ package org.example;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class PhoneBook implements ImpExp{
-    public List<Contact> contacts;
+    public List<Contact> contacts = new ArrayList<>();
 
     public PhoneBook(List<Contact> contacts) {
         this.contacts = contacts;
@@ -52,6 +53,18 @@ public class PhoneBook implements ImpExp{
         for (String newContact : newContacts) {
             System.out.println(newContact);
         }
+    }
+
+    public void addContact(){
+        Scanner scanner = new Scanner(System.in);
+        Contact newContact = new Contact();
+        System.out.println("Фамилия:");
+        newContact.setLastName(scanner.next());
+        System.out.println("Имя:");
+        newContact.setName(scanner.next());
+        System.out.println("Телефон:");
+        newContact.setPhoneNumber(scanner.next());
+        scanner.close();
     }
 
     @Override

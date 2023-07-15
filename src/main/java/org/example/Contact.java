@@ -40,9 +40,8 @@ public class Contact {
 
     @Override
     public String toString() {
-        return '{' + "Фамилия:'" + lastName + '\'' +
-                ", Имя'" + name + '\'' +
-                ", телефон:'" + phoneNumber + '\'' +
-                '}';
+        return lastName + " " +
+                name + " " +
+                phoneNumber;
     }
 }

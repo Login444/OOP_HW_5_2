@@ -9,13 +9,10 @@ public class Main {
 
 
     public static void main(String[] args) {
-        PhoneBook contacts = new PhoneBook(Arrays.asList(
-                new Contact("Бирюков", "Артемий", "89268756318"),
-                new Contact("Бирюкова", "Оксана", "89637248905"),
-                new Contact("Ивайкин", "Пич", "89057770000")
-        ));
-        contacts.toFile();
-        contacts.fromFile();
+        PhoneBook contacts = new PhoneBook();
+        contacts.addContact();
+        // contacts.toFile();
+        // contacts.fromFile();
 
     }
 
