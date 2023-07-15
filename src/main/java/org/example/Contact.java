@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.Scanner;
+
 public class Contact {
     private String lastName;
     private String name;
@@ -43,5 +45,17 @@ public class Contact {
         return lastName + " " +
                 name + " " +
                 phoneNumber;
+    }
+
+    public Contact createContact(){
+        Scanner scanner = new Scanner(System.in);
+        Contact newContact = new Contact();
+        System.out.println("Введите фамилию:");
+        newContact.setLastName(scanner.next());
+        System.out.println("Введите имя:");
+        newContact.setName(scanner.next());
+        System.out.println("Введите телефон:");
+        newContact.setPhoneNumber(scanner.next());
+        return newContact;
     }
 }
