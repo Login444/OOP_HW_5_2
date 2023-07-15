@@ -1,15 +1,12 @@
-package org.example;
+package org.example.controller;
 
-import java.util.Scanner;
+import org.example.view.View;
+import org.example.model.Model;
 
-public class Main {
-    // Создать телефонный справочник с возможностью импорта и экспорта данных в нескольких форматах.
-    //под форматами понимаем структуру файлов, например:
-    //* в файле на одной строке хранится одна часть записи, пустая строка - разделитель
-
-
-    public static void main(String[] args) {
-        PhoneBook phoneBook = new PhoneBook();
+public class App {
+    public static void mainMenu(){
+        View view = new Input();
+        Model model = new Model(view);
         System.out.println("\nМеню"
                 +"\n1.Показать все контакты"
                 +"\n2.Найти контакт по фамилии"
@@ -19,31 +16,30 @@ public class Main {
                 +"\n6.Экспортировать телефонную книгу в файл"
                 +"\n7.Импортировать телефонную книгу из файла"
                 +"\n8.Выход");
-        Scanner scan = new Scanner(System.in);
-        int choose = scan.nextInt();
+        int choose = view.chooseMenuButton();
         while (choose != 8){
             if (choose == 1){
-                phoneBook.showAllContacts();
+                model.showAllContacts();
             }
             if (choose == 2){
-                PhoneBook findBy = new PhoneBook();
+                Model findBy = new Model(view);
                 findBy.searchContactByLastName();
                 findBy.showAllContacts();
             }
             if (choose == 3){
-                phoneBook.addContact();
+                model.addContact();
             }
             if (choose == 4){
-                phoneBook.editContact();
+                model.editContact();
             }
             if (choose == 5){
-                phoneBook.deleteContact();
+                model.deleteContact();
             }
             if (choose == 6){
-                phoneBook.toFile();
+                model.toFile();
             }
             if (choose == 7){
-                phoneBook.fromFile();
+                model.fromFile();
             }
 
             System.out.println("\nМеню"
@@ -55,7 +51,7 @@ public class Main {
                     +"\n6.Экспортировать телефонную книгу в файл"
                     +"\n7.Импортировать телефонную книгу из файла"
                     +"\n8.Выход");
-            choose = scan.nextInt();
+            choose = view.chooseMenuButton();
         }
     }
 }

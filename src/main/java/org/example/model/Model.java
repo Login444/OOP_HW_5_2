@@ -1,32 +1,28 @@
-package org.example;
+package org.example.model;
 
+import org.example.view.View;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class PhoneBook implements ImpExp{
-    public List<Contact> contacts;
+public class Model {
+    PhoneBook currentBook = new PhoneBook();
+    private View view;
 
-    public PhoneBook() {
-        contacts = new ArrayList<Contact>();
+    public Model(View view) {
+        this.view = view;
     }
 
-
-    public List<Contact> getContacts() {
-        return contacts;
+    public PhoneBook currentBook(){
+        return this.currentBook;
     }
 
-    public void setContacts(List<Contact> contacts) {
-        this.contacts = contacts;
-    }
-
-    @Override
     public void toFile() {
         File newFile = new File("phone_book.txt");
         try (FileWriter writer = new FileWriter(newFile, true)) {
-            for (Contact contact : contacts) {
+            for (Contact contact : currentBook.getContacts()) {
                 String text = contact.toString();
                 writer.write(text + "\n");
             }
@@ -35,7 +31,6 @@ public class PhoneBook implements ImpExp{
         }
     }
 
-    @Override
     public void fromFile() {
         try (FileReader fileReader = new FileReader("phone_book.txt")) {
 
@@ -50,31 +45,18 @@ public class PhoneBook implements ImpExp{
                 expContact.setName(name);
                 String phoneNumber = lineToArray[2];
                 expContact.setPhoneNumber(phoneNumber);
-                contacts.add(expContact);
+                currentBook.getContacts().add(expContact);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void addContact(){
-        Scanner scanner = new Scanner(System.in);
-        Contact newContact = new Contact();
-        System.out.println("Введите фамилию:");
-        newContact.setLastName(scanner.next());
-        System.out.println("Введите имя:");
-        newContact.setName(scanner.next());
-        System.out.println("Введите телефон:");
-        newContact.setPhoneNumber(scanner.next());
-        contacts.add(newContact);
-    }
-
     public void searchContactByLastName(){
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Введите фамилию искомого контакта:");
-        String find = scanner.nextLine();
+        String find = view.getLastName();
         List<Contact> searchRes = new ArrayList<>();
-        for (Contact contact : contacts) {
+        for (Contact contact : currentBook.getContacts()) {
             if (contact.getLastName().toLowerCase() == find.toLowerCase()){
                 searchRes.add(contact);
             }
@@ -87,47 +69,47 @@ public class PhoneBook implements ImpExp{
     public void deleteContact(){
         Scanner scanner = new Scanner(System.in);
         System.out.println("Номер контакта для удаления:");
-        int find = scanner.nextInt();
-        contacts.remove(find-1);
+        int find = view.chooseContactNum();
+        currentBook.getContacts().remove(find-1);
     }
 
     public void showAllContacts(){
         int i = 1;
-        for (Contact contact : contacts) {
+        for (Contact contact : currentBook().getContacts()) {
             System.out.println(i + ". "+ contact);
             i++;
         }
     }
 
     public void editContact(){
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Номер контакта для изменения:");
-        int find = scanner.nextInt();
+        int find = view.chooseContactNum();
         System.out.println("Что изменить?"
-                        +"\n1.Фамилию"
-                        +"\n2.Имя"
-                        +"\n3.Телефон");
-        int n = scanner.nextInt();
-        Scanner scanner1 = new Scanner(System.in);
+                +"\n1.Фамилию"
+                +"\n2.Имя"
+                +"\n3.Телефон");
+        int n = view.chooseMenuButton();
         switch (n){
             case 1:
-                System.out.println("Введите новую фамилию:");
-                contacts.get(find-1).setLastName(scanner1.nextLine());
+                currentBook.getContacts().get(find-1).setLastName(view.getLastName());
                 break;
             case 2:
-                 System.out.println("Введите новое имя:");
-                 contacts.get(find-1).setName(scanner1.nextLine());
-                 break;
+                currentBook.getContacts().get(find-1).setName(view.getName());
+                break;
             case 3:
-                 System.out.println("Введите новый телефон:");
-                 contacts.get(find-1).setPhoneNumber(scanner1.nextLine());
-                 break;
-                }
-
+                currentBook.getContacts().get(find-1).setPhoneNumber(view.getPhoneNumber());
+                break;
         }
 
+    }
 
-
+    public void addContact(){
+        Contact newContact = new Contact();
+        newContact.setLastName(view.getLastName());
+        newContact.setName(view.getName());
+        newContact.setPhoneNumber(view.getPhoneNumber());
+        currentBook.getContacts().add(newContact);
+    }
 
 
 }
